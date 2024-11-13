@@ -1,4 +1,4 @@
 class ServerUser < ApplicationRecord
-  belongs_to :servers
-  belongs_to :users
+  belongs_to :server
+  belongs_to :user
 end
