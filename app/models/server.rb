@@ -1,4 +1,4 @@
 class Server < ApplicationRecord
   belongs_to :user
-  belongs_to :server_user # Basically the members list
+  has_many :server_users
 end
