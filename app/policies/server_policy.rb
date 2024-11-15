@@ -11,6 +11,11 @@ class ServerPolicy < ApplicationPolicy
     current_user == record.user
   end
 
+  def destroy?
+    # Only the server owner can delete a server, this will not change.
+    current_user == record.user
+  end
+
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     # def resolve
