@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -10,4 +12,10 @@ Rails.application.routes.draw do
   post "/servers/create", to: "servers#create"
   patch "/server/:id/edit", to: "servers#edit"
   delete "/server/:id", to: "servers#destroy"
+
+  get "/server/:server_id/channels", to: "channels#index"
+  get "/channel/:id", to: "channels#show"
+  post "/server/:server_id/channels/create", to: "channels#create"
+  patch "/channel/:id/edit", to: "channels#edit"
+  delete "/channel/:id", to: "channels#destroy"
 end

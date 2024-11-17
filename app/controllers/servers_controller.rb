@@ -34,9 +34,11 @@ class ServersController < ApplicationController
   def destroy
     @server = Server.find(params[:id])
     authorize @server
-    @server.destroy
-
-    render json: { message: "Server deleted" }, status: 200
+    if @server.destroy
+      render json: { message: "Server deleted" }, status: 200
+    else
+      render json: { error: "Server could not be deleted" }, status: 500 # An edge case but it may happen
+    end
   end
 
   protected
