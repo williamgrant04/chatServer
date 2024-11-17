@@ -1,7 +1,9 @@
 class ChannelsController < ApplicationController
   def index
     @server = Server.find(params[:server_id])
+    @server_users = ServerUser.where(server: @server)
     @channels = @server.channels
+    authorize(@server_users, :index?, policy_class: ChannelPolicy) # This is kinda monekey-patched
 
     render json: { channels: @channels }, status: 200
   end
