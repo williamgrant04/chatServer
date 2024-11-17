@@ -38,6 +38,12 @@ gem "rack-cors"
 # Use Devise for user authentication even though I kinda hate devise
 gem "devise"
 
+# Using devise-jwt for JWT authentication, allowing front-end access to the API
+gem "devise-jwt"
+
+# Using dotenv-rails to load environment variables from an .env file
+gem "dotenv-rails"
+
 # Using pundit for authorization to ensure users can only access permitted content
 gem "pundit"
 
