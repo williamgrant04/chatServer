@@ -9,20 +9,16 @@ Rails.application.routes.draw do
     sessions: "users/sessions",
     registrations: "users/registrations"
   }
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 
   get "/servers", to: "servers#index"
   get "/server/:id", to: "servers#show"
-  post "/servers/create", to: "servers#create"
-  patch "/server/:id/edit", to: "servers#edit"
+  post "/servers/new", to: "servers#create"
+  patch "/server/:id/edit", to: "servers#update"
   delete "/server/:id", to: "servers#destroy"
 
   get "/server/:server_id/channels", to: "channels#index"
   get "/channel/:id", to: "channels#show"
-  post "/server/:server_id/channels/create", to: "channels#create"
-  patch "/channel/:id/edit", to: "channels#edit"
+  post "/server/:server_id/channels/new", to: "channels#create"
+  patch "/channel/:id/edit", to: "channels#update"
   delete "/channel/:id", to: "channels#destroy"
 end

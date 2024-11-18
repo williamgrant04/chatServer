@@ -5,15 +5,20 @@ class ServerPolicy < ApplicationPolicy
   # code, beware of possible changes to the ancestors:
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
 
-  def edit?
+  def show?
+    # Only server members can view the server
+    record.user == user
+  end
+
+  def update?
     # Only the server owner can edit the server
     # This may change if I decide to expand this to include permissions
-    current_user == record.user
+    user == record.user
   end
 
   def destroy?
     # Only the server owner can delete a server, this will not change.
-    current_user == record.user
+    user == record.user
   end
 
   class Scope < ApplicationPolicy::Scope

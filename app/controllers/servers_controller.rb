@@ -6,6 +6,9 @@ class ServersController < ApplicationController
 
   def show
     @server = Server.find(params[:id])
+    # find_by not where because this should just return the specific serveruser
+    @server_users = ServerUser.find_by(user: current_user, server: @server)
+    authorize(@server_users, :show?, policy_class: ServerPolicy)
 
     render json: { server: @server }, status: 200
   end
@@ -21,7 +24,7 @@ class ServersController < ApplicationController
     end
   end
 
-  def edit
+  def update
     @server = Server.find(params[:id])
     authorize @server
     @server.update(server_params)

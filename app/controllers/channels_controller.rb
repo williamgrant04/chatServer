@@ -1,7 +1,8 @@
 class ChannelsController < ApplicationController
   def index
     @server = Server.find(params[:server_id])
-    @server_users = ServerUser.where(server: @server)
+    # find_by not where because this should just return the specific serveruser
+    @server_users = ServerUser.find_by(user: current_user, server: @server)
     @channels = @server.channels
     authorize(@server_users, :index?, policy_class: ChannelPolicy) # This is kinda monekey-patched
 
@@ -10,6 +11,8 @@ class ChannelsController < ApplicationController
 
   def show
     @channel = Channel.find(params[:id])
+    @server_users = ServerUser.find_by(user: current_user, server: @channel.server)
+    authorize(@server_users, :show?, policy_class: ChannelPolicy)
 
     render json: { channel: @channel }, status: 200
   end
@@ -18,6 +21,7 @@ class ChannelsController < ApplicationController
     @server = Server.find(params[:server_id])
     @channel = Channel.new(channel_params)
     @channel.server = @server
+    authorize @channel
 
     if @channel.valid? && @channel.save
       render json: { channel: @channel }, status: 201
@@ -37,7 +41,7 @@ class ChannelsController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     @channel = Channel.find(params[:id])
 
     if @channel.destroy
@@ -45,5 +49,11 @@ class ChannelsController < ApplicationController
     else
       render json: { error: "Channel could not be deleted" }, status: 500
     end
+  end
+
+  protected
+
+  def channel_params
+    params.require(:channel).permit(:name)
   end
 end
