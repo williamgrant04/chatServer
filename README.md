@@ -1,7 +1,8 @@
 # The back-end of a simple chat application
 
-This is the back-end of a simple chat application I am making as practise and to also learn more about the changes in Rails 8, mostly SolidCable.
+[This](https://dbdiagram.io/d/673444b8e9daa85aca437739) is the schema design made in [dbdiagram.io](https://dbdiagram.io)
 
+This is the back-end of a simple chat application I am making as practise and to also learn more about the changes in Rails 8, mostly SolidCable.
 If you wish to clone and run this:
 * Ruby version 3.2.0
 * Rails version 8.0.0
