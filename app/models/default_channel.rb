@@ -1,0 +1,2 @@
+class DefaultChannel < ApplicationRecord
+end
