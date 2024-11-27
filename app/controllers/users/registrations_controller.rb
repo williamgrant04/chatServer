@@ -5,6 +5,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [ :create ]
   before_action :configure_account_update_params, only: [ :update ]
 
+  private
+
+  def respond_with(resource, _opts = {})
+    if resource.valid?
+      render json: resource
+    else
+      render json: { errors: resource.errors.full_messages }, status: 422
+    end
+  end
+
   # GET /resource/sign_up
   # def new
   #   super

@@ -1,14 +1,18 @@
 Rails.application.routes.draw do
   devise_for :users, path: "",
-  path_names: {
-    sign_in: "login",
-    sign_out: "logout",
-    registration: "signup"
-  },
-  controllers: {
-    sessions: "users/sessions",
-    registrations: "users/registrations"
-  }
+    path_names: {
+      sign_in: "login",
+      sign_out: "logout",
+      registration: "signup"
+    },
+    controllers: {
+      sessions: "users/sessions",
+      registrations: "users/registrations"
+    }
+
+  devise_scope :user do
+    get "/loggedin", to: "users/sessions#logged_in?"
+  end
 
   get "/servers", to: "servers#index"
   get "/server/:id", to: "servers#show"

@@ -3,9 +3,18 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
+  def logged_in?
+    if current_user
+      render json: { logged_in: true, user: current_user }, status: 200
+    else
+      render json: { logged_in: false }, status: 200
+    end
+  end
+
   private
 
   def respond_with(resource, _opts = {})
+    puts resource
     render json: resource
   end
 
