@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_17_114658) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_27_163515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_114658) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_channel_id"
+    t.index ["default_channel_id"], name: "index_servers_on_default_channel_id"
     t.index ["user_id"], name: "index_servers_on_user_id"
   end
 
@@ -69,5 +71,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_114658) do
   add_foreign_key "messages", "users"
   add_foreign_key "server_users", "servers"
   add_foreign_key "server_users", "users"
+  add_foreign_key "servers", "channels", column: "default_channel_id"
   add_foreign_key "servers", "users"
 end

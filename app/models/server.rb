@@ -17,6 +17,8 @@ class Server < ApplicationRecord
   end
 
   def create_default_channel
-    Channel.create(server: self, name: "general") # I'll keep this as "general" for now, but I might rename it later
+    channel = Channel.create(server: self, name: "general") # I'll keep this as "general" for now, but I might rename it later
+    self.default_channel = channel
+    self.save!
   end
 end
