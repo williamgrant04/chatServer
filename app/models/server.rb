@@ -3,7 +3,7 @@ class Server < ApplicationRecord
   has_many :server_users, dependent: :destroy
   has_many :members, through: :server_users, source: :user
   has_many :channels, dependent: :destroy
-  has_many :default_channels, dependent: :destroy
+  has_one :default_channel, dependent: :destroy
 
   validates :name, presence: true
   validates :name, length: { minimum: 3, maximum: 50 }

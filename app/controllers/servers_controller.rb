@@ -1,7 +1,7 @@
 class ServersController < ApplicationController
   def index # Will need a list of servers related to a user
     @servers = current_user.servers
-    render json: { servers: @servers }, status: 200
+    render json: { servers: @servers.map { |server| ServerSerializer.new(server) } }, status: 200
   end
 
   def show
