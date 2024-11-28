@@ -3,6 +3,7 @@ class Server < ApplicationRecord
   has_many :server_users, dependent: :destroy
   has_many :members, through: :server_users, source: :user
   has_many :channels, dependent: :destroy
+  has_many :default_channels, dependent: :destroy
 
   validates :name, presence: true
   validates :name, length: { minimum: 3, maximum: 50 }
@@ -17,6 +18,7 @@ class Server < ApplicationRecord
   end
 
   def create_default_channel
-    Channel.create(server: self, name: "general") # I'll keep this as "general" for now, but I might rename it later
+    channel = Channel.create(server: self, name: "general") # I'll keep this as "general" for now, but I might rename it later
+    DefaultChannel.create(server: self, channel: channel)
   end
 end
