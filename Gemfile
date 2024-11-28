@@ -47,6 +47,9 @@ gem "dotenv-rails"
 # Using pundit for authorization to ensure users can only access permitted content
 gem "pundit"
 
+# Use ActiveModel Serializers for JSON serialization
+gem "active_model_serializers"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
