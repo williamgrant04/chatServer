@@ -3,10 +3,9 @@ class ChannelsController < ApplicationController
     @server = Server.find(params[:server_id])
     # find_by not where because this should just return the specific serveruser
     @server_users = ServerUser.find_by(user: current_user, server: @server)
-    @channels = @server.channels
     authorize(@server_users, :index?, policy_class: ChannelPolicy) # This is kinda monekey-patched
 
-    render json: { channels: @channels }, status: 200
+    render json: { channels: @server.channels }, status: 200
   end
 
   def show
