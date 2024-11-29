@@ -1,5 +1,7 @@
 class Channel < ApplicationRecord
   belongs_to :server
+  has_many :messages, dependent: :destroy
+
   has_many :default_channels, dependent: :destroy
 
   validates :name, presence: true

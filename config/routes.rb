@@ -25,4 +25,7 @@ Rails.application.routes.draw do
   post "/server/:server_id/channels/new", to: "channels#create"
   patch "/channel/:id/edit", to: "channels#update"
   delete "/channel/:id", to: "channels#destroy"
+
+  get "/channel/:channel_id/messages", to: "messages#index"
+  post "/channel/:channel_id/messages/new", to: "messages#create"
 end
