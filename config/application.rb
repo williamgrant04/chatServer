@@ -18,6 +18,7 @@ module ChatServer
 
     # This is to mount action cable in the API
     config.action_cable.mount_path = "/cable"
+    config.action_cable.url = "ws://localhost:3000/cable"
 
     # Configuration for the application, engines, and railties goes here.
     #
