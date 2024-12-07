@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   def index
     @channel = Channel.find(params[:channel_id])
-    @messages = @channel.messages.includes(:author).order(created_at: :asc).limit(100)
+    @messages = @channel.messages.includes(:author).order(created_at: :desc).limit(100).reverse
 
     render json: { messages: @messages.map { |message| MessageSerializer.new(message) } }, status: 200
   end
