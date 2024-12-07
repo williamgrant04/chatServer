@@ -30,6 +30,15 @@ class MessagesController < ApplicationController
     end
   end
 
+  def destroy
+    @message = Message.find(params[:id])
+
+    if @message.destroy
+      ChannelChannel.broadcast_to(@message.channel, { destroy: true, message: MessageSerializer.new(@message) })
+      head :ok
+    end
+  end
+
   private
 
   def message_params
