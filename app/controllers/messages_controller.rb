@@ -1,9 +1,9 @@
 class MessagesController < ApplicationController
   def index
     @channel = Channel.find(params[:channel_id])
-    @messages = @channel.messages.order(created_at: :asc).limit(100)
+    @messages = @channel.messages.includes(:author).order(created_at: :asc).limit(100)
 
-    render json: { messages: @messages }, status: 200
+    render json: { messages: @messages.map { |message| MessageSerializer.new(message) } }, status: 200
   end
 
   def create
@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
     @message.author = current_user
 
     if @message.save
-      ChannelChannel.broadcast_to(@channel, @message)
+      ChannelChannel.broadcast_to(@channel, MessageSerializer.new(@message))
       head :ok
     else
       render json: { errors: @message.errors.full_messages }, status: 422

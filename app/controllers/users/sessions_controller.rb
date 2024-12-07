@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def respond_with(resource, _opts = {})
     puts resource
-    render json: resource
+    render json: resource, adapter: nil
   end
 
   def respond_to_on_destroy
