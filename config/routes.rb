@@ -28,4 +28,5 @@ Rails.application.routes.draw do
 
   get "/channel/:channel_id/messages", to: "messages#index"
   post "/channel/:channel_id/messages/new", to: "messages#create"
+  patch "/message/:id/edit", to: "messages#edit"
 end

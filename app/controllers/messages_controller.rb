@@ -13,10 +13,20 @@ class MessagesController < ApplicationController
     @message.author = current_user
 
     if @message.save
-      ChannelChannel.broadcast_to(@channel, MessageSerializer.new(@message))
+      ChannelChannel.broadcast_to(@channel, { edit: false, message: MessageSerializer.new(@message) })
       head :ok
     else
       render json: { errors: @message.errors.full_messages }, status: 422
+    end
+  end
+
+  def edit
+    @message = Message.find(params[:id])
+    @message.content = message_params[:content]
+
+    if @message.save
+      ChannelChannel.broadcast_to(@message.channel, { edit: true, message: MessageSerializer.new(@message) })
+      head :ok
     end
   end
 
