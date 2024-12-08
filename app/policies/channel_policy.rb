@@ -20,7 +20,7 @@ class ChannelPolicy < ApplicationPolicy
   def create?
     # Only server owner can create a channel, this may change if I decide to expand this to include permissions
     # I should implement a check to see if the user is a member of the server, but that isn't needed right now because the server owner is automatically a member
-    record.server.user == user
+    record.server.owner == user
   end
 
   def update?

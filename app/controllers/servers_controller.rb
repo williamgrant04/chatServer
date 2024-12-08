@@ -10,15 +10,15 @@ class ServersController < ApplicationController
     @server_users = ServerUser.find_by(user: current_user, server: @server)
     authorize(@server_users, :show?, policy_class: ServerPolicy)
 
-    render json: { server: @server }, status: 200
+    render json: { server: ServerSerializer.new(@server) }, status: 200
   end
 
   def create
     @server = Server.new(server_params)
-    @server.user = current_user
+    @server.owner = current_user
 
     if @server.valid? && @server.save
-      render json: { server: @server }, status: 201
+      render json: { server: ServerSerializer.new(@server) }, status: 201
     else
       render json: { errors: @server.errors.full_messages }, status: 422
     end
@@ -30,7 +30,7 @@ class ServersController < ApplicationController
     @server.update(server_params)
 
     if @server.valid? && @server.save
-      render json: { server: @server }, status: 200
+      render json: { server: ServerSerializer.new(@server) }, status: 200
     end
   end
 

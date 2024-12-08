@@ -1,5 +1,5 @@
 class Server < ApplicationRecord
-  belongs_to :user
+  belongs_to :owner, class_name: "User", foreign_key: "user_id"
   has_many :server_users, dependent: :destroy
   has_many :members, through: :server_users, source: :user
   has_many :channels, dependent: :destroy
