@@ -18,7 +18,8 @@ class ServersController < ApplicationController
     @server.owner = current_user
 
     if @server.valid? && @server.save
-      render json: { server: ServerSerializer.new(@server) }, status: 201
+      ActionCable.server.broadcast("server_channel", ServerSerializer.new(@server))
+      head :ok
     else
       render json: { errors: @server.errors.full_messages }, status: 422
     end
