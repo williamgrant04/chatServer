@@ -5,7 +5,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def logged_in?
     if current_user
-      render json: { logged_in: true, user: current_user }, status: 200
+      render json: { logged_in: true, user: UserSerializer.new(current_user) }, status: 200
     else
       render json: { logged_in: false }, status: 200
     end
@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def respond_with(resource, _opts = {})
     puts resource
-    render json: resource, adapter: nil
+    render json: { user: UserSerializer.new(resource) }
   end
 
   def respond_to_on_destroy
