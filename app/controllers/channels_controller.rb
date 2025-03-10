@@ -23,7 +23,7 @@ class ChannelsController < ApplicationController
     authorize @channel
 
     if @channel.valid? && @channel.save
-      render json: { channel: @channel }, status: 201
+      ChannelChannel.broadcast_to(@server, { channel: @channel })
     else
       render json: { errors: @channel.errors.full_messages }, status: 422
     end
