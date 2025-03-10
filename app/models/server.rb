@@ -14,7 +14,7 @@ class Server < ApplicationRecord
   protected
 
   def create_server_user
-    ServerUser.create(server: self, user: self.user)
+    ServerUser.create(server: self, user: self.owner)
   end
 
   def create_default_channel
