@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
     @message.author = current_user
 
     if @message.save
-      ChannelChannel.broadcast_to(@channel, { edit: false, message: MessageSerializer.new(@message) })
+      MessageChannel.broadcast_to(@channel, { edit: false, message: MessageSerializer.new(@message) })
       head :ok
     else
       render json: { errors: @message.errors.full_messages }, status: 422
@@ -25,7 +25,7 @@ class MessagesController < ApplicationController
     @message.content = message_params[:content]
 
     if @message.save
-      ChannelChannel.broadcast_to(@message.channel, { edit: true, message: MessageSerializer.new(@message) })
+      MessageChannel.broadcast_to(@message.channel, { edit: true, message: MessageSerializer.new(@message) })
       head :ok
     end
   end
@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
 
     if @message.destroy
-      ChannelChannel.broadcast_to(@message.channel, { destroy: true, message: MessageSerializer.new(@message) })
+      MessageChannel.broadcast_to(@message.channel, { destroy: true, message: MessageSerializer.new(@message) })
       head :ok
     end
   end
