@@ -9,9 +9,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def respond_with(resource, _opts = {})
     if resource.valid?
-      render json: resource
+      render json: { user: UserSerializer.new(resource) }
     else
-      render json: { errors: resource.errors.full_messages }, status: 422
+      errors = resource.errors.full_messages.map do |err|
+        if err.downcase.include?("email") then
+          { type: "email", message: err }
+        elsif err.downcase.include?("username") then
+          { type: "username", message: err }
+        elsif err.downcase.include?("password") then
+          { type: "password", message: err }
+        end
+      end.reject { |err| err[:message] == "Password can't be blank" } # No idea why devise does this
+
+      if errors then
+        render json: errors, status: 422, adapter: nil
+      else
+        render json: { errors: resource.errors.full_messages }, status: 422
+      end
     end
   end
 
