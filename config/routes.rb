@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   delete "/server/:id", to: "servers#destroy"
 
   get "/server/:server_id/channels", to: "channels#index"
-  get "/channel/:id", to: "channels#show"
+  get "/server/:server_id/channel/:channel_id", to: "channels#show"
   post "/server/:server_id/channels/new", to: "channels#create"
   patch "/channel/:id/edit", to: "channels#update"
   delete "/channel/:id", to: "channels#destroy"

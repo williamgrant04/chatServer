@@ -9,7 +9,10 @@ class ChannelsController < ApplicationController
   end
 
   def show
-    @channel = Channel.find(params[:id])
+    @channel = Channel.find_by(server_id: params[:server_id], id: params[:channel_id])
+
+    return render json: { error: "Channel not found" }, status: 404 if @channel.nil?
+    # @channel = Channel.find(params[:id])
     @server_users = ServerUser.find_by(user: current_user, server: @channel.server)
     authorize(@server_users, :show?, policy_class: ChannelPolicy)
 
