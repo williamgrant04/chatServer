@@ -5,6 +5,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [ :create ]
   before_action :configure_account_update_params, only: [ :update ]
 
+  # POST /resource
+  def create
+    cl_response = Cloudinary::Uploader.upload(user_params[:image][:blob], folder: "chatapp")
+    p cl_response
+    head 422
+    # super
+  end
+
   private
 
   def respond_with(resource, _opts = {})
@@ -34,11 +42,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # POST /resource
-  # def create
-  #   super
-  # end
-
   # GET /resource/edit
   # def edit
   #   super
@@ -64,6 +67,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   protected
+
+  def user_params
+    params.require(:user).permit([ :email, :password, :password_confirmation, :username, image: [ :type, :blob ] ])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
