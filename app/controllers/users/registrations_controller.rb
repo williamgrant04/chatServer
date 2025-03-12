@@ -8,9 +8,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     cl_response = Cloudinary::Uploader.upload(user_params[:image][:blob], folder: "chatapp")
-    p cl_response
-    head 422
-    # super
+    @user = User.new(user_params.except(:image))
+    @user.image_public_id = cl_response["public_id"]
+
+    if @user.save
+      sign_in(@user) # I'm not exactly sure this does anything, but I've used it before in fullstack rails apps
+      respond_with(@user)
+    end
   end
 
   private
