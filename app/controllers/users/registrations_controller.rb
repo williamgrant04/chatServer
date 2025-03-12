@@ -7,7 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    cl_response = Cloudinary::Uploader.upload(user_params[:image][:blob], folder: "chatapp")
+    cl_response = Cloudinary::Uploader.upload(user_params[:image][:blob], folder: "chatapp/users")
     @user = User.new(user_params.except(:image))
     @user.image_public_id = cl_response["public_id"]
 
