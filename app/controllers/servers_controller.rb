@@ -14,8 +14,10 @@ class ServersController < ApplicationController
   end
 
   def create
-    @server = Server.new(server_params)
+    @server = Server.new(server_params.except(:image))
     @server.owner = current_user
+    cl_response = Cloudinary::Uploader.upload(server_params[:image][:blob], folder: "chatapp/servers")
+    @server.image_public_id = cl_response["public_id"]
 
     if @server.valid? && @server.save
       ActionCable.server.broadcast("server_channel", ServerSerializer.new(@server))
@@ -48,6 +50,6 @@ class ServersController < ApplicationController
   protected
 
   def server_params
-    params.require(:server).permit(:name)
+    params.require(:server).permit(:name, image: [ :type, :blob ])
   end
 end
