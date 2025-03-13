@@ -47,7 +47,8 @@ class ChannelsController < ApplicationController
     @channel = Channel.find(params[:id])
 
     if @channel.destroy
-      render json: { message: "Channel deleted" }, status: 200
+      ChannelChannel.broadcast_to(@channel.server, { destroy: true, channel: @channel })
+      head 200
     else
       render json: { error: "Channel could not be deleted" }, status: 500
     end
