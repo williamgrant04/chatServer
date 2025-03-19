@@ -8,11 +8,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     cl_response = Cloudinary::Uploader.upload(user_params[:image][:blob], folder: "chatapp/users")
-    @user = User.new(user_params.except(:image))
+    @user = User.new(user_params.except([ :image, :status ]))
     @user.image_public_id = cl_response["public_id"]
 
     if @user.save
       sign_in(@user) # I'm not exactly sure this does anything, but I've used it before in fullstack rails apps
+      respond_with(@user)
+    end
+  end
+
+  # PATCH /resource
+  def update
+    @user = current_user
+    @user.update(user_params)
+
+    if @user.save then
       respond_with(@user)
     end
   end
@@ -51,11 +61,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # PUT /resource
-  # def update
-  #   super
-  # end
-
   # DELETE /resource
   # def destroy
   #   super
@@ -73,7 +78,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def user_params
-    params.require(:user).permit([ :email, :password, :password_confirmation, :username, image: [ :type, :blob ] ])
+    params.require(:user).permit([ :email, :password, :password_confirmation, :username, :status, image: [ :type, :blob ] ])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
