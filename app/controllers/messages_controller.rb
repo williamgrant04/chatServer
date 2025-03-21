@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   def index
     @channel = Channel.find(params[:channel_id])
     @messages = @channel.messages.includes(:author).order(created_at: :desc).limit(100)
-    
+
 
     render json: { messages: @messages.map { |message| MessageSerializer.new(message) } }, status: 200
   end
@@ -24,6 +24,7 @@ class MessagesController < ApplicationController
   def edit
     @message = Message.find(params[:id])
     @message.content = message_params[:content]
+    @message.edited = true
 
     if @message.save
       MessageChannel.broadcast_to(@message.channel, { edit: true, message: MessageSerializer.new(@message) })
