@@ -1,4 +1,12 @@
 class MessageSerializer < ActiveModel::Serializer
-  attributes :id, :content, :created_at, :updated_at
+  attributes :id, :content, :timestamp, :edit_timestamp
   belongs_to :author
+
+  def timestamp
+    object.created_at.to_i
+  end
+
+  def edit_timestamp
+    object.updated_at.to_i
+  end
 end
