@@ -13,6 +13,24 @@ class ServersController < ApplicationController
     render json: { server: ServerSerializer.new(@server) }, status: 200
   end
 
+  def invite
+    @server = Server.find(params[:id]) # Might make an "invite codes" table or something, allowing multiple invite codes per server
+    @server_user = ServerUser.find_by(user: current_user, server: @server)
+
+    if @server_user.nil? then
+      @server_user = ServerUser.new(user: current_user, server: @server)
+
+      if @server_user.save
+        ActionCable.server.broadcast("server_channel", ServerSerializer.new(@server))
+        head 200
+      else
+        render json: { errors: @server_user.errors.full_messages }, status: 422
+      end
+    else
+      render json: { error: "User already exists on server" }, status: 400
+    end
+  end
+
   def create
     @server = Server.new(server_params.except(:image))
     @server.owner = current_user

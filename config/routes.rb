@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   post "/servers/new", to: "servers#create"
   patch "/server/:id/edit", to: "servers#update"
   delete "/server/:id", to: "servers#destroy"
+  post "/invite/:id", to: "servers#invite" # Again, might make an invite code system instead
 
   get "/server/:server_id/channels", to: "channels#index"
   get "/server/:server_id/channel/:channel_id", to: "channels#show"
